@@ -1,0 +1,104 @@
+sfDecorator plugin
+==================
+
+This plugin provides a tool to easily create decorator classes in Symfony. 
+
+Overview
+--------
+
+Decorator classes (see wikipedia about the [decorator pattern](http://en.wikipedia.org/wiki/Decorator_pattern)) are a way to extend functionality at realtime. It's powerful 
+when you want to slightly alter a core class of symfony.
+
+The problem with decorator classes is that you have to 'mirror' all public methods. Most classes
+inherit a lot of them, most of them you even don't know about.
+
+This plugin (by default) registers an autoloader. You can just write something like this completely
+useless example:
+
+    [php]
+    class divForm extends sfFormDecorator
+    {
+      public function render($attributes = array())
+      {
+        return '<div class="myform">'.$this->object->render($attributes)."</div>;
+      }
+    }
+
+The main point in here is that the plugin will detect `sfFormDecorator` as a non existent class. By
+the name it knows you want to decorate the sfForm class. So the plugin creates an abstract
+`sfFormDecorator` in your cache directory.
+
+Installation
+------------
+
+  * Install the plugin
+ 
+        > php symfony plugin:install sfDecoratorPlugin
+        
+  * Enable the plugin in your `config/ProjectConfiguration.class.php`
+  
+        [php]
+        class ProjectConfiguration extends sfProjectConfiguration
+        {
+          public function setup()
+          {
+            $this->enablePlugins('sfDecoratorPlugin');
+          }
+        }
+    
+  * Clear the cache
+
+        > php symfony cc
+
+Usage
+-----
+
+You can either:
+
+ *  Tell a class to extend `[yourClassToDecorate]Decorator`. The following code will work:
+ 
+        [php]
+        class inputLabeledWidget extends sfWidgetFormDecorator
+        {
+          public function getLabel()
+          {
+            $widget = new sfWidgetFormInputText();
+            return $object->getLabel();
+          }
+        }
+    
+    The plugin will automatically generate the `sfWidgetFormDecorator` in your cache
+    
+ *  Use the `symfony generate:decorator` task from the cli. Usage is very easy:
+ 
+        > php symfony generate:decorator sfWidgetForm
+      
+    The above command will generate the `sfWidgetFormDecorator` class in your lib dir. The task has
+    more options, use `symfony help plugin:decorator` to discover them.
+
+Options
+-------
+
+The following options are available (all in `app.yml`), all options displayed are the
+defaults, specified in the plugins `app.yml`:
+
+
+    [yml]
+    all:
+      sfDecoratorPlugin:
+        generate_on_demand:   true
+       
+  * `generate_on_demand` enables the autoloader to recognize non existing `\*Decorator` classes
+    and generate them on demand in the cache. When set to false this functionality is disabled.
+
+TODO / Ideas
+------------
+ 
+  * Please let them know!
+
+Changelog
+---------
+
+### 2009-12-11 | 1.0.0 stable
+
+  * Initial release
