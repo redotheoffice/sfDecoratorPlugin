@@ -1,3 +1,0 @@
-all:
-  sfDecoratorPlugin:
-    generate_on_demand:   true
