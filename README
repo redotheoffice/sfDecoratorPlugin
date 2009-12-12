@@ -86,6 +86,7 @@ No options are available.
 TODO / Ideas
 ------------
  
+  * Add support for chaining. Check if a function returns the decorator object, then return the decorator.
   * Please let them know!
 
 Changelog
