@@ -92,6 +92,10 @@ TODO / Ideas
 Changelog
 ---------
 
+### 2009-12-15 | 1.0.2 stable
+
+  * added support for method chaining
+
 ### 2009-12-12 | 1.0.1 stable
 
   * Removed conditionally enabling autoloading
