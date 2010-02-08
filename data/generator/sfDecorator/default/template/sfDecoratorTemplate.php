@@ -7,17 +7,27 @@ abstract class <?php echo $this->generatedClass ?> extends <?php echo $this->dec
 
 {
   protected
-    $object = null;
+    $decoratedObject = null;
   
-  function __construct(<?php echo $this->decoratedClass ?> $object)
+  public function __construct(<?php echo $this->decoratedClass ?> $object)
   {
-    $this->object = $object;
+    $this->setDecoratedObject($object);
+  }
+
+  public function getDecoratedObject()
+  {
+    return $this->decoratedObject;
+  }
+  
+  public function setDecoratedObject(<?php echo $this->decoratedClass ?> $object = null)
+  {
+    $this->decoratedObject = $object;
   }
 
 <?php echo sfDecorator::getMethodCodeFor($this->decoratedClass) ?>
   
-  function __clone()
+  public function __clone()
   {
-    $this->object = clone($this->object);
+    $this->decoratedObject = clone($this->decoratedObject);
   }
 }

@@ -28,6 +28,7 @@ abstract class sfDecorator
     {
       if (  $rm->isPublic() 
         && !$rm->isStatic()
+        && !$rm->isFinal()
         &&  $rm->getName() != '__construct'
         &&  $rm->getName() != '__clone')
       {
@@ -44,7 +45,8 @@ abstract class sfDecorator
         $code .= "  {\n";
         
         // return the result of the inner object
-        $code .= "    \$result = \$this->object->" . $rm->getName();
+        $code .= "    \$object = \$this->getDecoratedObject();\n";
+        $code .= "    \$result = \$object->" . $rm->getName();
         $rps = $rm->getParameters();
         $ps = array();
         foreach ($rps as $rp)
@@ -53,7 +55,7 @@ abstract class sfDecorator
         }
         $code .= "(".implode(', ',$ps).");\n";
         
-        $code .= "    return \$result===\$this->object ? \$this : \$result;\n";
+        $code .= "    return \$result===\$object ? \$this : \$result;\n";
         $code .= "  }\n";
         
         $methods[$rm->getName()] = $docblock."\n".$code;
